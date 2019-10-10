@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Counters from './Counters';
+import Navbar from './Navbar';
 
 class App extends Component {
   state = {
@@ -8,12 +9,29 @@ class App extends Component {
       { id: 2, value: 5 },
       { id: 3, value: 8 },
       { id: 4, value: 2 }
-    ]
+    ],
+    last: 4
   }
 
-  handleDelete = (id) => {
-    const counters = this.state.counters.filter(c => c.id !== id);
+  handleDecrement = (counter) => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = {...counter};
+    counters[index].value--;
     this.setState({ counters });
+  }
+
+  handleIncrement = (counter) => {
+    const counters = [...this.state.counters];
+    const index = counters.indexOf(counter);
+    counters[index] = {...counter};
+    counters[index].value++;
+    this.setState({ counters });
+  }
+
+  handleDelete = (counter) => {
+    const counters = this.state.counters.filter(c => c !== counter);
+    this.setState({ counters: counters });
   }
 
   handleReset = () => {
@@ -24,24 +42,25 @@ class App extends Component {
     this.setState({ counters: counters })
   }
 
-  handleIncrement = (counter) => {
+  handleAdd = () => {
     const counters = [...this.state.counters];
-    const index = counters.indexOf(counter);
-    counters[index] = {...counter};
-    counters[index].value++;
-    console.log(counters[index].value);
-    this.setState({ counters });
+    var lastIndex = this.state.last + 1;
+    const object = { id: lastIndex, value: 0 };
+    counters.push(object);
+    this.setState( { last: lastIndex, counters: counters });
   }
-
 
   render() {
     return (
             <div>
+              <Navbar counters={this.state.counters}/>
               <Counters
+                onAdd={this.handleAdd}
+                onDecrement={this.handleDecrement}
                 onIncrement={this.handleIncrement}
                 onReset={this.handleReset}
                 onDelete={this.handleDelete}
-                counters = {this.state.counters}
+                counters={this.state.counters}
               />
             </div>
           );
