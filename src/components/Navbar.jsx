@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Navbar extends Component {
   getTotal() {
     var sum = 0;
-    this.props.counters.map(counter => {
+    this.props.counters.map((counter) => {
       sum += counter.value;
     });
     return sum;
@@ -12,7 +12,7 @@ class Navbar extends Component {
     return(
       <nav className="navbar navbar-light bg-light">
         <span className="navbar-brand mb-0">Total:
-          <span className="badge badge-success m-2">{ this.getTotal() }</span>
+          <span className="badge badge-success m-2">{ this.props.total }</span>
         </span>
       </nav>
     );
